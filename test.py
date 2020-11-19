@@ -1,10 +1,24 @@
 import json
 
-f = open('claudiepierlot_uk_20200701230904.txt', 'r')
-content = [json.loads(x) for x in f.readlines()]
+import pytest
 
-print(content[0]['price_hierarchy'])
+from utils import aggregate_items
 
-#for x in content:
-#    print(x['details']['colors'][0])
+
+f = open('test_items.json', 'r')
+values = json.load(f)
+f.close()
+
+f = open('expected.json', 'r')
+expected = json.load(f)
+f.close()
+
+test_values = [(item_id, items, expected[item_id]) for item_id, items in values.items()]
+
+
+@pytest.mark.parametrize('item_id, items, expected', test_values)
+def test_aggregate_items(item_id, items, expected):
+    assert aggregate_items(item_id, items) == expected
+    
+
    

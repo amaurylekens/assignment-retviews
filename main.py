@@ -3,7 +3,7 @@ import json
 
 from pyspark import SparkContext
 
-from utils import extract_id, aggregate_items
+from modules.utils import extract_id, aggregate_items
 
 
 def main():

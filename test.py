@@ -1,9 +1,8 @@
 import json
-import os
 
 import pytest
 
-from utils import aggregate_items
+from modules.utils import aggregate_items
 
 
 f = open('test_items.json', 'r')

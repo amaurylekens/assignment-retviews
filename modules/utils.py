@@ -1,17 +1,3 @@
-def extract_id(item):
-
-    """Extract the item id from the dict with 
-       the item data
-
-       :param item: dict with the item data
-       :return: the id of the item"""
-    
-    i_start = item['product_id'].find('dwvar_')
-    i_end = item['product_id'].find('_color')
-
-    product_id = item['product_id'][i_start+len('dwvar_'):i_end]
-    return product_id
-
 def aggregate_items(item_id, items):
 
     """Build aggregated item from 
@@ -58,5 +44,55 @@ def aggregate_items(item_id, items):
         
         a_item['colors'][item_color] = color_spec
 
-    return a_item 
+    return a_item
+
+
+def filter_colors(item, colors):
+    
+    """Say if a item has a model with the 
+       specified color
+       
+       :param item: a dict with the item data
+       :param specified_color: name of the color
+       :return: boolean, True if there is the color"""
+
+
+    has_color = True
+    for color in colors:
+        if color not in list(item['colors'].keys()):
+            has_color = False
+            break
+
+    return has_color
+
+
+
+def get_prices(item, colors=None):
+
+    """Return the price for the one or several 
+       colors of a item
+
+       :param item: a dict with the item data
+       :param colors: list of names of the specified colors,
+                      if None, return data for all colors
+       :return: list of tuples (color, price),
+                if all specified color doesn't exist return 
+                empty list"""
+
+    item_id = item['item_id']
+    prices = []
+
+    for color, data in item['colors'].items():
+        if (colors is None) or (color in colors): 
+            price = data['price']['current']
+            prices.append((item_id, color, price))
+
+    return prices
+ 
+
+
+
+
+
+
         

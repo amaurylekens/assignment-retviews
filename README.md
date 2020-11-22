@@ -6,5 +6,38 @@
 
 ## requirements
 
-*pyspark
-*mongodb
+### Python packages
+
+* pyspark
+* pymongo
+* cerberus
+
+### Others
+
+* pyspark
+* mongodb
+
+## Launch
+
+For the two project, a version of mongodb must run locally. On ubuntu (18.0.4) we launch the database with the following command:
+
+```bash
+sudo service mongod start
+```
+
+### Data processing
+
+We launch the data processing app with:
+
+```bash
+python3 data_processing.py
+```
+
+### Basics stats
+
+We launch the app calculating basic stats with:
+
+```bash
+python3 compute_stats.py
+```
+

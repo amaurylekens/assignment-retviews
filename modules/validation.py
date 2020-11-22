@@ -1,77 +1,88 @@
-import cerberus
+#! /usr/bin/env python3
+# coding: utf-8
+
+from cerberus import Validator
+
 
 def validate(item):
+
     """Validate de schema of the dict
        with the item data
 
        :param item: a dict with the item data
-       :return: boolean, True if the item schema 
+       :return: boolean, True if the item schema
                 is valid"""
+
+    color = item['details']['colors'][0]
 
     schema = {
         'ref': {
-            'type': 'string' 
-        },
-        'images': {
-            'type': 'dict'
-        },
-        ''
-        
-    }
-
-def validate1(item, colors):
-
-    """Validate de schema of the dict
-       with the item data
-
-       :param item: a dict with the item data
-       :return: boolean, True if the item schema 
-                is valid"""
-
-    schema = {
-        'item_id': {
             'type': 'string'
         },
-        'title': {
-            'type': 'string'
-        }
         'description': {
-            'type': 'string'
-        }
-    }
-
-    colors_schema = {
-      'type': 'dict', 
-      'schema': {}
-    }
-
-    for color in colors:
-        colors_schema['schema'][color] = {
             'type': 'dict',
             'schema': {
-                'images': {
-                    'type': 'list'
+                'en': {
+                    'type': 'string'
+                }
+            }
+        },
+        'main_title': {
+            'type': 'dict',
+            'schema': {
+                'en': {
+                    'type': 'string'
+                }
+            }
+        },
+        'images': {
+            'type': 'dict',
+            'schema': {
+                color: {
+                    'type': 'list',
+                    'schema': {
+                        'type': 'string',
+                        'regex': r'^https?:(.*)'
+                    }
+                }
+            }
+        },
+        'price_hierarchy': {
+            'type': 'dict',
+            'schema': {
+                'type': {
+                    'type': 'string'
                 },
-                'price': {
+                color: {
                     'type': 'dict',
                     'schema': {
-                        'current': {
-                            'type': 'float',
+                        'price': {
+                            'type': 'dict',
+                            'schema': {
+                                'GBP': {
+                                    'type': 'string',
+                                    'regex': r'^(?:[1-9]\d*|0)(?:\.\d+)?$'
+                                }
+                            }
                         },
-                        'discount': {
-                            'type': 'boolean',
-                        },
-                        'previous': {
-                            'type': 'float',
-                        },
-                        'delta': {
-                            'type': 'float',
-                        } 
+                        'previous_price': {
+                            'type': 'dict',
+                            'schema': {
+                                'GBP': {
+                                    'type': 'string',
+                                    'regex': r'^(?:[1-9]\d*|0)(?:\.\d+)?$',
+                                    'empty': True
+                                }
+                            }
+                        }
                     }
-                }    
+                }
             }
         }
+    }
 
-    schema['color'] = colors_schema
+    # create validator object and allow others fields
+    v = Validator(schema)
+    v.allow_unknown = True
 
-
+    return v.validate(item)

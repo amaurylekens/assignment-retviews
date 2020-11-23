@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 # coding: utf-8
 
-from typing import List, Dict
+from typing import List, Dict, Tuple
 
 
 def aggregate_items(item_id: str, items: List[Dict]) -> Dict:
@@ -72,8 +72,8 @@ def filter_colors(item: Dict, colors: List[str]) -> bool:
     return has_color
 
 
-def get_prices(item: Dict, colors=None: List[str]) -> List[Tuple[str,
-                                                           str, float]]:
+def get_prices(item: Dict, colors: List[str] = None) -> List[Tuple[str,
+                                                             str, float]]:
 
     """Return the price for the one or several
        colors of a item

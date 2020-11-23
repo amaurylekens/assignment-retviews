@@ -25,6 +25,13 @@ For the two project, a version of mongodb must run locally. On ubuntu (18.0.4) w
 sudo service mongod start
 ```
 
+You have too create a data directory and put the data files in it:
+
+```bash
+cd assignment-retviews
+mkdir data
+```
+
 ### Data processing
 
 We launch the data processing app with:

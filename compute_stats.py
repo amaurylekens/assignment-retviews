@@ -1,4 +1,5 @@
-import pyspark
+#! /usr/bin/env python3
+# coding: utf-8
 
 from pymongo import MongoClient
 from pyspark import SparkContext
@@ -90,5 +91,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

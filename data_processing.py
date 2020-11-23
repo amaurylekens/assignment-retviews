@@ -13,6 +13,7 @@ from modules.validation import validate
 
 def main():
 
+    # get and process the data
     sc = SparkContext()
     lines = sc.textFile('data/claudiepierlot_uk_20200701230904.jl')
     items = lines.map(lambda line: json.loads(line)) \
@@ -22,8 +23,7 @@ def main():
                  .map(lambda t: aggregate_items(t[0], t[1])) \
                  .collect()
 
-
-    # mongodb client
+    # write in mongodb
     client = MongoClient()
     db = client['retviews']
     col = db['items']

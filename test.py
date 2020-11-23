@@ -17,7 +17,6 @@ with open("test_data/items.json", "r") as f:
 with open("test_data/aggregated_items.json", "r") as f:
     a_items = json.load(f)
 
-
 # test aggregate_items()
 test_values = [(item_id, item_list, a_items[item_id])
                for item_id, item_list in items.items()]
@@ -34,7 +33,7 @@ with open('test_data/test_get_prices.json') as f:
 test_values = data['test_values']
 test_values = [(a_items[v[0]], v[1] if
                 v[1] != '' else None,
-                [tuple(l) for l in v[2]])
+                [tuple(_list) for _list in v[2]])
                for v in test_values]
 
 

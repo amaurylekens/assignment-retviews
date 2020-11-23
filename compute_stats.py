@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 
 from modules.utils import get_prices
 
+
 def main():
 
     # get the data from mongodb
@@ -24,11 +25,11 @@ def main():
         items.append(document)
 
     # initialize rdd
-    sc = SparkContext()     
+    sc = SparkContext()
     prices = sc.parallelize(items) \
                .flatMap(lambda item: get_prices(item))
-                
-    #construct dataframe
+
+    # construct dataframe
     data_frame_schema = StructType([
         StructField("id", StringType()),
         StructField("color", StringType()),
@@ -39,7 +40,7 @@ def main():
     df = sqlContext.createDataFrame(rows_rdd, data_frame_schema) \
                    .persist()
 
-    #compute basics stats on all data
+    # compute basics stats on all data
     df_stats = df.select(
         avg(col('price')).alias('mean'),
         stddev(col('price')).alias('std'),
@@ -52,18 +53,18 @@ def main():
     print("std: ", df_stats[0]['std'])
     print("max: ", df_stats[0]['max'])
     print("min: ", df_stats[0]['min'])
-    
-    # compute basics stats by colors 
+
+    # compute basics stats by colors
     colors_df = df.groupBy("color") \
-                  .agg(avg("price").alias("average_price"), \
-                       min("price").alias("min_price"), \
-                       max("price").alias("max_price"), \
-                       stddev("price").alias("stddev_price"), \
-                       count("price").alias("count"), \
+                  .agg(avg("price").alias("average_price"),
+                       min("price").alias("min_price"),
+                       max("price").alias("max_price"),
+                       stddev("price").alias("stddev_price"),
+                       count("price").alias("count"),
                        collect_list("price").alias("list")) \
-                  .orderBy("count", ascending = False) \
+                  .orderBy("count", ascending=False) \
                   .persist()
-    
+
     # show basics stats by colors
     colors_df.show()
 
@@ -86,8 +87,9 @@ def main():
 
     for ax in axs.flat:
         ax.label_outer()
-    
+
     plt.show()
+
 
 if __name__ == "__main__":
     main()

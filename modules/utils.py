@@ -1,8 +1,10 @@
 #! /usr/bin/env python3
 # coding: utf-8
 
+from typing import List, Dict
 
-def aggregate_items(item_id, items):
+
+def aggregate_items(item_id: str, items: List[Dict]) -> Dict:
 
     """Build aggregated item from
        the individuals items
@@ -50,7 +52,7 @@ def aggregate_items(item_id, items):
     return a_item
 
 
-def filter_colors(item, colors):
+def filter_colors(item: Dict, colors: List[str]) -> bool:
 
     """Say if a aggregated item has a model for each
        of the specified colors
@@ -70,7 +72,8 @@ def filter_colors(item, colors):
     return has_color
 
 
-def get_prices(item, colors=None):
+def get_prices(item: Dict, colors=None: List[str]) -> List[Tuple[str,
+                                                           str, float]]:
 
     """Return the price for the one or several
        colors of a item

@@ -1,10 +1,12 @@
 #! /usr/bin/env python3
 # coding: utf-8
 
+from typing import Dict
+
 from cerberus import Validator
 
 
-def validate(item):
+def validate(item: Dict) -> bool:
 
     """Validate de schema of the dict
        with the item data

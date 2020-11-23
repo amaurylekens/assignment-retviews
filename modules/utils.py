@@ -9,7 +9,7 @@ def aggregate_items(item_id, items):
 
        :param item_id: common id of the items
        :param items: list of items
-       :return: dict with data of the teraggregated item"""
+       :return: dict with data of the aggregated item"""
 
     a_item = dict()
     a_item['item_id'] = item_id
@@ -21,45 +21,47 @@ def aggregate_items(item_id, items):
     for item in items:
         item_color = item['details']['colors'][0]
 
-        # build color specification
-        color_spec = {}
+        # build color data
+        color_data = {}
 
-        # images
+        # get and store images for the color
         images = item['images'][item_color]
-        color_spec['images'] = images
+        color_data['images'] = images
 
-        # price
-        color_spec['price'] = {}
+        # get and store prices for the color
+        color_data['price'] = {}
         price_data = item['price_hierarchy'][item_color]
         current_price = float(price_data['price']['GBP'])
-        color_spec['price']['current'] = current_price
+        color_data['price']['current'] = current_price
 
+        # check if there is previous price
         if price_data['previous_price']['GBP'] != '':
             previous_price = float(price_data['previous_price']['GBP'])
-            color_spec['price']['discount'] = 1
-
+            color_data['price']['discount'] = 1
         else:
             previous_price = current_price
-            color_spec['price']['discount'] = 0
+            color_data['price']['discount'] = 0
 
-        color_spec['price']['previous'] = previous_price
-        color_spec['price']['delta'] = previous_price-current_price
+        color_data['price']['previous'] = previous_price
+        color_data['price']['delta'] = previous_price-current_price
 
-        a_item['colors'][item_color] = color_spec
+        a_item['colors'][item_color] = color_data
 
     return a_item
 
 
 def filter_colors(item, colors):
 
-    """Say if a item has a model with the
-       specified color
+    """Say if a aggregated item has a model for each
+       of the specified colors
 
        :param item: a dict with the item data
-       :param specified_color: name of the color
+       :param colors: list of the names of the specified colors
        :return: boolean, True if there is the color"""
 
     has_color = True
+    # loop through the specified colors and check
+    # if the color is in the aggregated item
     for color in colors:
         if color not in list(item['colors'].keys()):
             has_color = False
@@ -76,7 +78,7 @@ def get_prices(item, colors=None):
        :param item: a dict with the item data
        :param colors: list of names of the specified colors,
                       if None, return data for all colors
-       :return: list of tuples (color, price),
+       :return: list of tuples (item_id, color, price),
                 if all specified color doesn't exist return
                 empty list"""
 
